@@ -14,6 +14,7 @@ const FirstSecond = {template:'<div>First1.2内容: dongdong还钱 {{$route.para
 
 const FirstChildren = {template:'<div ><router-view ></router-view></div>'};
 
+
 //子路由配置方式一 ：思想---> 每一个对象对应一个单独的组件
 // const routes = [
 //   {path:'/',component:Home},
@@ -32,10 +33,19 @@ const routes = [
       {path:'second',name:'Home-First-second',component:FirstSecond}//默认匹配成：/first/second
     ]
   },
-  {path:'/second',name:'Home-Second',component:Second}//可以通过$route.name获取name值
+  {path:'/second',name:'Home-Second',component:Second},//可以通过$route.name获取name值
+  {path:'/third',components:{
+    default:Home,
+    third:First,
+    forth:Second
+  }},{path:'/forth',components:{
+    default:Home,
+    third:Second,
+    forth:First
+  }}
+
+
 ];
-
-
 
 const router = new VueRouter({
   model:'history',
@@ -44,7 +54,7 @@ const router = new VueRouter({
 
 new Vue({
   router,
-  template:'<div id="r"><h1>导航</h1>当前路由的名称：{{$route.name}}<ul><li><router-link to="/">Home</router-link></li><li><router-link to="/first">First</router-link><ol><li><router-link :to="{name:\'Home-First-first\',params:{msg:\'dongdong借钱一万块\'}}">First1.1</router-link></li><li><router-link :to="{name:\'Home-First-second\',params:{msg:\'dongdong还钱一万块\', amount:10000}}">First1.2</router-link></li></ol><li><router-link to="/second">Second</router-link></li></ul><router-view ></router-view></div>'
+  template:'<div id="r"><h1>导航</h1>当前路由的名称：{{$route.name}}<ul><li><router-link to="/">Home</router-link></li><li><router-link to="/first">First</router-link><ol><li><router-link :to="{name:\'Home-First-first\',params:{msg:\'dongdong借钱一万块\'}}">First1.1</router-link></li><li><router-link :to="{name:\'Home-First-second\',params:{msg:\'dongdong还钱一万块\', amount:10000}}">First1.2</router-link></li></ol><li><router-link to="/second">Second</router-link></li><li><router-link to="/third">Third</router-link></li><li><router-link to="/forth">forth</router-link></li></ul><router-view ></router-view><router-view name="third" style="width: 30%;height: 200px;background-color: aqua"></router-view><router-view name="forth" style="width: 30%;height: 200px;background-color: bisque"></router-view></div>'
 }).$mount('#app');
 
 // import Vue from "vue"
