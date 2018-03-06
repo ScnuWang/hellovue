@@ -10,11 +10,13 @@ const First = {template:'<div>First内容</div>'};
 const Second = {template:'<div>Second内容</div>'};
 
 const Firstfirst = {template:'<div>First1.1内容：{{$route.params.msg}}</div>'};
-const FirstSecond = {template:'<div>First1.2内容: dongdong还钱 {{$route.params.amount}}</div>'};
+const FirstSecond = {template:'<div>First1.2内容（使用query传值）: {{$route.query.msg}}  {{$route.query.amount}}</div>'};
 
 const FirstChildren = {template:'<div ><router-view ></router-view></div>'};
 
-
+const User = {
+  template:'<div>User : {{$route.params.id}} : {{$route.params.name}}</div>'
+}
 //子路由配置方式一 ：思想---> 每一个对象对应一个单独的组件
 // const routes = [
 //   {path:'/',component:Home},
@@ -33,8 +35,8 @@ const routes = [
       {path:'second',name:'Home-First-second',component:FirstSecond}//默认匹配成：/first/second
     ]
   },
-  {path:'/second',name:'Home-Second',component:Second},//可以通过$route.name获取name值
-  {path:'/third',components:{
+  {path:'/second',name:'Home-Second',component:Second,alias:['/dongdong','/bingbing']},//可以通过$route.name获取name值, 给路由添加别名
+  {path:'/third',components:{ //同时控制多个视图多个组件
     default:Home,
     third:First,
     forth:Second
@@ -42,7 +44,18 @@ const routes = [
     default:Home,
     third:Second,
     forth:First
-  }}
+  }},
+  {path:'/user/:id',component:User}, // url传参
+  {path:'/user/:id/:name',component:User}, // url传参
+  {path:'/aaa',redirect:'/second'}, // 重定向
+  {path:'/bbb/:id',redirect:'/user/:id'}, // 重定向
+  {path:'/bbb/:id',redirect:{name:Home-Second}}, // 重定向到一个命名路由
+  {path:'/ccc/:id',redirect:to=>{
+      const {hash,params,query} = to
+      if(params.id == '007'){
+        return '/'
+      }
+  }}, // 动态方法重定向
 
 
 ];
@@ -54,7 +67,30 @@ const router = new VueRouter({
 
 new Vue({
   router,
-  template:'<div id="r"><h1>导航</h1>当前路由的名称：{{$route.name}}<ul><li><router-link to="/">Home</router-link></li><li><router-link to="/first">First</router-link><ol><li><router-link :to="{name:\'Home-First-first\',params:{msg:\'dongdong借钱一万块\'}}">First1.1</router-link></li><li><router-link :to="{name:\'Home-First-second\',params:{msg:\'dongdong还钱一万块\', amount:10000}}">First1.2</router-link></li></ol><li><router-link to="/second">Second</router-link></li><li><router-link to="/third">Third</router-link></li><li><router-link to="/forth">forth</router-link></li></ul><router-view ></router-view><router-view name="third" style="width: 30%;height: 200px;background-color: aqua"></router-view><router-view name="forth" style="width: 30%;height: 200px;background-color: bisque"></router-view></div>'
+  template:`<div id="r">
+                <h1>导航</h1>当前路由的名称：{{$route.name}}
+                <ul>
+                  <li><router-link to="/">Home</router-link></li>
+                  <li><router-link to="/first">First</router-link>
+                    <ol>
+                      <li><router-link :to="{name:\'Home-First-first\',params:{msg:\'dongdong借钱一万块\'}}">First1.1</router-link></li>
+                      <li><router-link :to="{path:'/first/second',query:{msg:\'dongdong还钱\', amount:10000}}">First1.2</router-link></li>
+                    </ol>
+                  <li><router-link to="/second">Second</router-link></li>
+                  <li><router-link to="/third">Third</router-link></li>
+                  <li><router-link to="/forth">forth</router-link></li>
+                  <li><router-link to="/user/222">User: 编号222</router-link></li>
+                  <li><router-link to="/user/666/jason">User: 编号222 jason</router-link></li>
+                  <li><router-link to="/aaa">aaa重定向到second</router-link></li>
+                  <li><router-link to="/bbb/123">/bbb/123重定向到/user/123</router-link></li>
+                  <li><router-link to="/ccc/456">/ccc/456重定向到home</router-link></li>
+                  <li><router-link to="/dongdong">second的别名dongdong</router-link></li>
+                  <li><router-link to="/bingbing">second的别名bingbing</router-link></li>
+                </ul>
+                <router-view ></router-view>
+                <router-view name="third" style="width: 30%;height: 200px;background-color: aqua"></router-view>
+                <router-view name="forth" style="width: 30%;height: 200px;background-color: bisque"></router-view>
+              </div>`
 }).$mount('#app');
 
 // import Vue from "vue"
