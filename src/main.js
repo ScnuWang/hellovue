@@ -9,8 +9,8 @@ const Home = {template:'<div>首页内容</div>'};
 const First = {template:'<div>First内容</div>'};
 const Second = {template:'<div>Second内容</div>'};
 
-const Firstfirst = {template:'<div>First1.1</div>'};
-const FirstSecond = {template:'<div>First1.2</div>'};
+const Firstfirst = {template:'<div>First1.1内容</div>'};
+const FirstSecond = {template:'<div>First1.2内容</div>'};
 
 
 const routes = [
