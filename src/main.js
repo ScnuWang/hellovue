@@ -9,11 +9,16 @@ const Home = {template:'<div>首页内容</div>'};
 const First = {template:'<div>First内容</div>'};
 const Second = {template:'<div>Second内容</div>'};
 
+const Firstfirst = {template:'<div>First1.1</div>'};
+const FirstSecond = {template:'<div>First1.2</div>'};
+
 
 const routes = [
   {path:'/',component:Home},
   {path:'/first',component:First},
-  {path:'/second',component:Second}
+  {path:'/second',component:Second},
+  {path:'/first/first',component:Firstfirst},
+  {path:'/first/second',component:FirstSecond},
 ];
 
 const router = new VueRouter({
@@ -23,7 +28,7 @@ const router = new VueRouter({
 
 new Vue({
   router,
-  template:'<div id="r"><h1>导航</h1><ul><li><router-link to="/">Home</router-link></li><li><router-link to="/first">First</router-link><li><router-link to="/second">Second</router-link></li></ul><router-view class="abc"></router-view></div>'
+  template:'<div id="r"><h1>导航</h1><ul><li><router-link to="/">Home</router-link></li><li><router-link to="/first">First</router-link><ul><li><router-link to="/first/first">First1.1</router-link></li><li><router-link to="/first/second">First1.2</router-link></li></ul><li><router-link to="/second">Second</router-link></li></ul><router-view class="abc"></router-view></div>'
 }).$mount('#app');
 
 // import Vue from "vue"
